@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Iron Bank | Signup </title>
+    <link href="/static/style.css" rel="stylesheet">
+    <script src="/static/login.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.png" >
+</head>
+<body class="login_page signup">
+ <form class="login_form" action="/signup" onsubmit="login()" method="POST" enctype="multipart/form-data">
+     <div class="loading_popup hidden" id="loading_popup">
+         <div class="load_spinner"></div>
+     </div>
+  {% csrf_token %}
+  <h1> Creation de client </h1>
+  <p class="error"> {{error_message}} </p>
+  <div class="page one">
+      <div class="input_wrapper">
+          <label for="username"> Nom d'utilisateur* </label>
+       <input minlength="4" class='input_form' id="username" required name="username" value="{{username}}">
+      </div>
+      <div class="input_wrapper">
+        <label for="email"> Email* </label>
+       <input class='input_form' type="email" required id="email" name="email" placeholder="" value="{{email}}">
+      </div>
+      <div class="input_wrapper">
+          <label for="password"> Mot de passe* </label>
+       <input minlength="8" class='input_form' type="password" required id="password" name="password" value="{{password}}">
+      </div>
+      <div class="input_wrapper">
+        <label for="password_attempt"> Confirmer mot de passe* </label>
+       <input minlength="8" class='input_form' type="password" required id="password_attempt" name="password_attempt" value="{{password_attempt}}">
+      </div>
+   </div>
+     <hr style="border-top:1px solid rgba(0,0,0,0.2);width:90%">
+     <h1> Informations personnelles </h1>
+   <div class="page two">
+      <div class="input_wrapper">
+        <label for="nom"> Nom* </label>
+       <input class='input_form' type="text" required id="nom" name="nom" value="{{first_name}}">
+      </div>
+      <div class="input_wrapper">
+        <label for="prenom"> Prenom* </label>
+       <input class='input_form' type="text" required id="prenom" name="prenom" value="{{last_name}}">
+      </div>
+       <div class="input_wrapper">
+        <label for="date_of_birth"> Date de naissance* </label>
+       <input class='input_form' type="date" required id="date_of_birth" name="date_of_birth" value="{{date_of_birth}}">
+      </div>
+      <div class="input_wrapper">
+        <label for="profile_image_input"> Photo de profile </label>
+        <input onchange="loadFile(event)" style="display:none;" accept="image/gif, image/jpeg, image/png" class='input_form' type="file" id="profile_image_input" name="profile_picture" value="{{profile_picture}}">
+          <div class='input_form' style='padding-top:0px;padding-bottom:0px;height:40px;cursor:pointer;display:flex;justify-content:space-between' onclick="profile_image_input.click()"><p id="image_select_text" style="line-height:40px;">Selectionner une image</p><img src="/static/profile.png" id="image_preview" style="object-fit:cover;aspect-ratio:1;height:40px;border-radius:50%;border:1px solid #dadce0;transform:translate(10px) scale(1);"> </div>
+      </div>
+  </div>
+      <div class="input_wrapper">
+       <input class='input_form' type="submit" value="Continuer">
+      </div>
+ </form>
+ <div class="bubble_wrapper">
+     <div class="bubble">
+         <h1> Vous avez deja un compte? </h1>
+         <br>
+         <input onclick="window.location.href = '/login'" class="input_form become_client" type="button" value="S'identifier">
+     </div>
+ </div>
+</body>
+</html>
