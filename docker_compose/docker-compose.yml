@@ -1,0 +1,91 @@
+version: "3.3"
+services :
+    django-rest:
+      image: ironbank_rest
+      container_name: ironbank_rest
+      stdin_open: true
+      tty: true
+      depends_on:
+        - database
+        - nats_transfer
+        - nats_withdrawal
+        - nats_deposit
+      command: bash -c "sleep 5 && python3 /app/base/manage.py migrate && apachectl -DFOREGROUND"
+      restart: always
+      networks:
+        internal_network:
+          ipv4_address: 172.16.1.10
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - /var/www/media:/app/media
+
+    database:
+      image: mariadb
+      container_name: database
+      restart: always
+      networks:
+        internal_network:
+          ipv4_address: 172.16.1.20
+      environment:
+        MYSQL_ROOT_PASSWORD: toto
+      volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - ./custom-entrypoint.sh:/docker-entrypoint.sh
+        - ./db_data:/var/lib/mysql
+      ports:
+        - "3306:3306"
+
+    nats_server:
+      image: nats
+      restart: always
+      container_name: nats_server
+      networks:
+        internal_network:
+          ipv4_address: 172.16.1.30
+      ports:
+        - "4222:4222"
+        - "8222:8222"
+        - "6222:6222"
+
+    nats_transfer:
+      image: transfer
+      container_name: nats_transfer
+      restart: always
+      depends_on:
+        - nats_server
+        - database
+      networks:
+        internal_network:
+          ipv4_address: 172.16.1.31
+
+    nats_deposit:
+      image: deposit
+      container_name: nats_deposit
+      restart: always
+      depends_on:
+        - nats_server
+        - database
+      networks:
+        internal_network:
+          ipv4_address: 172.16.1.32
+
+    nats_withdrawal:
+      image: withdrawal
+      container_name: nats_withdrawal
+      restart: always
+      depends_on:
+        - nats_server
+        - database
+      networks:
+        internal_network:
+          ipv4_address: 172.16.1.33
+
+networks:
+  internal_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24

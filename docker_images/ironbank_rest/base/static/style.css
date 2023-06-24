@@ -1,0 +1,227 @@
+*{margin:0; padding:0;font-family:system-ui,tahoma,verdana,arial;font-weight:100;}
+*::-webkit-scrollbar{width: 12px;}
+*::-webkit-scrollbar-track{border-radius: 8px;}
+*::-webkit-scrollbar-thumb{height: 56px;border-radius: 8px;border: 4px solid transparent;background-clip: content-box;background-color: transparent;}
+*::-webkit-scrollbar-thumb:hover {background-color: rgba(82,82,82,0.4);}
+*:hover::-webkit-scrollbar-thumb{height: 56px;border-radius: 8px;border: 4px solid transparent;background-clip: content-box;background-color: rgba(255,255,255,0.4);}
+
+html{scroll-behavior:smooth;}
+
+body{display:flex;background:white;overflow:hidden;}
+body:has(.navbar.retracted) > section.body{width:calc(100% - 74px);}
+
+nav.navbar.left{height:100vh;z-index:9999;min-width:74px;width:400px;max-width:40%;position:sticky;top:0;box-shadow:0px 0px 20px rgba(50,50,50,0.15);background:#1d1c58;display:flex;align-items:center;flex-direction:column;transition:width 0.2s ease}
+nav.navbar.left.retracted{width:74px;}
+nav.navbar.left.retracted > .navTabsWrapper > .navTabWrapper > li.tab{color:transparent;border-radius:38px;user-select:none;}
+nav.navbar.left.retracted > .account > .username{font-size:16px;margin-left:5px;width:calc(100% - 10px)}
+nav.navbar.left.retracted > .account{padding-top:40px;}
+nav.navbar.left.retracted > .header > .notification_wrapper{margin-left:-3px}
+nav.navbar.left.retracted > .header > .retract_button{transform:translate(-50px,55px) rotate(180deg);opacity:50%;}
+nav.navbar.left.retracted:hover > .header > .retract_button{opacity:100%;}
+	nav.navbar.left > .header{height:50px;padding:15px;width:calc(100% - 30px);margin-bottom:15px;display:flex;justify-content:space-between}
+		.notification_wrapper{transition:margin 0.2s ease}
+        .notification, .retract_button{min-width:30px;min-height:30px;filter:drop-shadow(0px 0px 10px rgba(50,50,50,0.8));border-radius:50%;cursor:pointer;padding:10px;transition:background 0.2s ease;}
+		.notification:hover, .retract_button:hover{background:rgba(0,0,0,0.1)}
+		.notification:active, .retract_button:active{background:rgba(0,0,0,0.2)}
+		.retract_button{transition:opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;z-index:1;}
+		.retract_icon{height:30px;width:30px;-webkit-user-drag:none;user-select:none;}
+	.account{display:flex;flex-direction:column;align-items:center;gap:15px;height:200px;position:relative;width:100%;transition:padding 0.2s ease;}
+		.username{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;text-align: center;font-weight: 400;color:white;width: 100%;transition:font-size 0.2s ease}
+		.profilePicture{width: 110px;max-width: calc(100% - 4px);aspect-ratio: 1;border-radius: 50%;-webkit-user-drag: none;box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;object-fit:cover}
+	.navTabsWrapper{border-top-left-radius:50px;border-top-right-radius:50px;width:100%;}
+	.navTabWrapper{list-style:none;display:flex;font-size:22px;flex-direction:column;width:100%;height:calc(100vh - 339px);background:linear-gradient(180deg, #262366 5%, rgba(255,255,255,0) 100%);border-top-left-radius:50px;border-top-right-radius:50px;position:relative;padding-top:62px;gap:2px;align-items:center;overflow-y:auto;overflow-x:hidden;}
+	.navTabWrapper > li.tab{user-select:none;white-space:nowrap;position:relative;color:white;padding:20px;width:calc(100% - 44px);border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:20px;transition:box-shadow 0.5s ease, background 0.2s ease, transform 0.2s ease, color 0.2s ease, border-radius 0.2s ease, font-weight 0.2s ease}
+	.navTabWrapper > li.tab:hover{background:rgba(255,255,255,0.2);}
+        .navTabWrapper > li.tab:active{background:rgba(255,255,255,0.4);}
+	.hover_tooltip{pointer-events:none;opacity:0%;transition:opacity 0.2s ease, transform 0.2s ease;position:fixed;background:rgba(255,255,255,0.9);font-size:16px;margin-left:60px;border-radius:5px;padding:10px;color:black;z-index:1;transform:scale(0.85) translateX(-20px);font-weight:400;white-space:nowrap;box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;}
+	nav.navbar.left.retracted > .navTabsWrapper > .navTabWrapper > li.tab:hover:not(li.tab:active:not(li.tab.selected)) > .hover_tooltip{transform:scale(1) translateX(0px);opacity:100%}
+	.navTabWrapper > li.separator{width:90%;min-height:50px;display:flex;align-items:center;}
+	.navTabWrapper > li.separator > hr{width:100%;border-top:1px solid #BBB;}
+	.navTabWrapper > li.tab.selected{font-weight:400;color:black;background:rgb(255 255 255);box-shadow: 5px 5px 20px rgba(0,0,0,0.2);}
+	.navTabWrapper > li.tab.selected > .tab_logo{filter:invert(1)}
+        .navTabWrapper > li.tab.reglages > .tab_logo{transition:transform 1s ease;}
+        .navTabWrapper > li.tab.reglages:not(.selected):hover > .tab_logo{transform:rotate(180deg);}
+	.tab_logo{height:30px;width:30px;margin:0px;-webkit-user-select:none;-webkit-user-drag:none;}
+
+.content_wrapper{height:calc(100vh - 68px);max-width:100%;display:flex;}
+.history_wrapper, .settings_wrapper{background:linear-gradient(0deg, rgba(255,255,255,1) 0%, #f1f2f6 10%);width:100%;background: linear-gradient(0deg, rgba(255,255,255,1) 0%, #f1f2f6 10%);overflow-y:scroll;width: 100%;display: flex;flex-direction: column;align-items: center;}
+.history_wrapper > .content_title, .settings_wrapper > .content_title{position:sticky;top:-20px;width:100%;}
+.join_wrapper{height:250px;max-width:420px;width:100%;background:white;box-shadow:4px 4px 26px rgba(50,50,50,0.2);border-radius:5px;margin:50px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:50px;}
+.join_title{font-size:30px;}
+
+.notifications_popup_wrapper{position:absolute;pointer-events:none;min-width:300px;width:100%;z-index:10;padding-top:20px;margin-top:-10px;transition:transform 0.2s ease, opacity 0.2s ease;}
+.notifications_popup_wrapper.hidden{transform:translate(0,-10px);pointer-events:none;opacity:0%;}
+.notifications_popup_wrapper:not(.hidden) > .notifications_popup{pointer-events:all}
+.notifications_arrow{width:0px;height:0px;position:absolute;z-index:1;border:transparent solid 15px;border-bottom-color:rgba(255,255,255,1);transform:translate(10px,-30px);}
+.notifications_popup{width:100%;min-height:180px;border-radius:25px;border-top-left-radius:5px;background:rgba(255,255,255,1);box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;padding-bottom:20px;}
+.notifications_header{width:calc(100% - 30px);padding:15px;font-size:20px;font-weight:400;border-bottom:1px solid #ccc;color:#1d1c58;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+.notifications_close{user-select:none;transform:scale(1.3);width:24px;height:24px;border-radius:50%;text-align:center;font-size:16px;font-weight:1;line-height:26px;cursor:pointer;border:1px solid transparent;transition:background 0.2s ease, color 0.2s ease, border 0.1s ease, transform 0.2s ease}
+.notifications_close:hover{background:rgba(0,0,0,0.05)}
+.notifications_close:active{background:rgba(0,0,0,0.15);border:1px solid rgba(0,0,0,0.2);transform:scale(1.2);color:black;}
+.notifications_body{width:calc(100% - 30px);padding:15px;font-size:18px;height:200px;overflow-y:overlay;overflow-x:hidden;border-bottom:1px solid #ccc}
+.notifications_body:hover::-webkit-scrollbar-thumb{background-color:#888}
+.notifications_body > ul{list-style:none;line-height:35px}
+
+section.body{width:calc(100% - 400px);transition:width 0.2s ease;height:100vh;overflow:hidden;position:relative}
+.load_animation{width:100%;height:100%;position:absolute;background:white;pointer-events:none;opacity:0;transition:opacity 0.2s ease;z-index:999999;}
+
+.content{display:flex;width:100%;height:100%;max-width:100%;}
+.content_left > p{width:90%;font-weight:600;color:#262366;}
+.card{width:320px;min-height:380px;height:380px;background:white;border-radius:25px;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;}
+.content_title{font-size:24px;padding-top:40px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:400;color:#262366;width:100%;text-align:center;position:sticky;top:-20px;z-index:2;padding-bottom:20px;background:#f1f2f650;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.card.account_view{width:calc(90% - 30px);padding:15px;min-height:140px;height:150px;border-radius:25px;transition:transform 0.2s ease, outline 0.2s ease;outline:2px solid transparent;cursor:pointer;display:flex;flex-direction:column;position:relative;gap:15px;}
+.card.account_view.disabled{opacity: 50%;pointer-events: none;background: #eee;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px inset;}
+.card.account_view:hover{transform:scale(1.04)}
+.card.account_view.account_selected{outline:2px solid #262366}
+.content_left{transition:width 0.2s ease;min-width:600px;width:600px;max-width:100%;background:linear-gradient(90deg , rgba(255,255,255,1) 0%, #f1f2f6 10%);display:flex;flex-direction:column;align-items:center;overflow-y:auto;gap:10px;height:calc(100vh - 40px);padding-bottom:40px;}
+.content_right{width:calc(100% - 600px);background:white;overflow-y:auto;overflow-x:auto;transition:transform 0.2s ease, box-shadow 0.2s ease;}
+.content_right > .content_title{background:rgba(255,255,255,0.4)}
+
+.account_name_edit{font-size:24px;max-width:500px;border:none;background:none;text-align:center;width:80%;border-radius:50px;font-weight:400;color:#262366;transition:opacity 0.2s ease}
+.account_name_edit:disabled{opacity:60%;}
+
+.card_view_name{font-weight:600;font-size:18px;max-width: calc(100% - 70px);white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.card_view_iban{font-weight:100;color:#777;}
+.card_view_balance{position:absolute;top:15px;right:15px;font-size:18px;font-weight:600;color:#262366;}
+.card_view_owner{position:absolute;bottom:15px;display:flex;gap:5px;align-items:center;}
+.card_view_owner_img{-webkit-user-drag:none;user-select:none;height:30px;width:30px;aspect-ratio:1;}
+
+.account_details{display:flex;flex-direction:column;gap:20px;overflow-y:auto;overflow-x:hidden;padding-top:10px;align-items:center;}
+.account_retract_button{position:absolute;padding:10px;cursor:pointer;border-radius:50%;height:30px;width:30px;left:15px;top:15px;display:none;}
+.account_retract_button:hover{background:rgba(0,0,0,0.1)}
+.account_retract_button:active{background:rgba(0,0,0,0.2)}
+.account_retract_button_icon{width:30px;height:30px;transform:rotate(180deg);}
+
+.main_popup{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:opacity 0.2s ease;opacity:1;position:absolute;width:100%;height:100%;background:rgba(0,0,0,0.2);z-index:5;display:flex;align-items:center;justify-content:center;}
+.main_popup.hidden{opacity:0;pointer-events:none;}
+.main_popup.hidden > .popup_body{transform:translateY(-50px);}
+.popup_body{transition:transform 0.2s ease;overflow-y:auto;overflow-x:hidden;background: white;max-height: 600px;height: calc(100% - 50px);width: calc(100% - 50px);max-width: 700px;border-radius: 15px;position:relative;box-shadow: rgba(100, 100, 111, 0.6) 0px 7px 29px 0px;}
+.popup_title{padding:20px;font-size:24px;font-weight:400;color:#262166;position:sticky;top:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:rgba(255,255,255,0.8);z-index:2;}
+.create_account_form{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.create_account_form > input{padding:10px;border:1px solid #dadce0;border-radius:25px;width:calc(100% - 100px);padding-left:20px;padding-right:20px;font-size:18px;}
+.create_account_form > select{padding: 10px;border: 1px solid #dadce0;border-radius: 25px;width: calc(100% - 58px);padding-left: 20px;padding-right:20px;font-size: 18px;}
+.create_account_form > input[type=submit]{margin-top:30px;width:calc(100% - 58px);cursor: pointer;background: #262366;font-weight: 400;color: white;}
+.create_account_form > h3{width: calc(100% - 120px);text-align: left;}
+.popup_close_button{user-select:none;transform:scale(1.3);width:24px;height:24px;border-radius:50%;text-align:center;font-size:16px;font-weight:1;line-height:26px;cursor:pointer;border:1px solid transparent;transition:background 0.2s ease, color 0.2s ease, border 0.1s ease, transform 0.2s ease;position:absolute;top:25px;right:25px;}
+.popup_close_button:hover{background:rgba(0,0,0,0.05)}
+.popup_close_button:active{background:rgba(0,0,0,0.15);border:1px solid rgba(0,0,0,0.2);transform:scale(1.2);color:black;}
+
+.account_view_tabs{list-style:none;display:flex;width:100%;justify-content:center;gap:5px;}
+.account_view_tabs > li{width:130px;font-size:18px;text-align:center;color:#777;cursor:pointer;transition:color 0.2s ease, font-weight 0.2s ease;}
+.account_view_tabs > li.selected{text-decoration:underline;color:#262366;font-weight:600;}
+.account_view_balance_top{transition:border-radius 0.2s ease;max-width:500px;width:-webkit-fill-available;padding:20px;display:flex;justify-content:center;border-radius:25px;color:white;font-weight:600;background:linear-gradient(180deg, #262366 40%, #1d1c58 100%)}
+.transaction_view_sidebar, .details_view_sidebar{width:calc(100% - 20px);max-width:500px;display:flex;flex-direction:column;gap:10px;padding-bottom:20px;}
+.details_view_sidebar{width:calc(100% - 60px);padding: 20px;border-radius: 20px;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;margin-bottom:30px;}
+b{font-weight:600;}
+h3{text-align:center;}
+.transaction_view_sidebar_title{font-weight:500;font-size:18px;margin-top:15px;}
+.transaction_view_sidebar_elem{background:white;width: calc(100% - 30px);display: flex;gap: 10px;padding: 15px;border-radius: 20px;box-shadow: 1px 1px 10px rgba(0,0,0,0.1);}
+
+.transactions_wrapper{background:linear-gradient(0deg , rgba(255,255,255,1) 0%, #f1f2f6 10%);min-height:100vh;width:100%;display:flex;justify-content:center;gap:5px;}
+.transactions_wrapper > .content_title{position:fixed;top:0px;}
+.transaction_card{margin-left:15px;margin-right:15px;cursor:pointer;margin-top:120px;display:flex;align-items:center;flex-direction:column;gap:60px;padding:20px;font-size:18px;font-weight:600;transition:transform 0.2s ease;color:#262366;min-height:320px;height:320px;}
+.transaction_card:hover{transform:scale(1.03) translateY(-6px);outline:2px solid #262366}
+.transaction_card > img{width:150px;height:150px;aspect-ratio:1;}
+
+.transaction_form, .transaction_inner_form{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.transaction_inner_form{padding-bottom:30px;width:100%;}
+.transaction_form_title{font-size:18px;text-align:left;width:90%}
+.transaction_inner_form > input[type=button]{padding:20px;border:1px solid #dadce0;border-radius:50px;font-size:18px;width:calc(100% - 58px);cursor: pointer;background: #262366;font-weight: 400;color: white;}
+.transaction_inner_form > input[type=text]{padding: 10px;border-radius: 25px;border: 1px solid #ccc;font-size: 18px;width: calc(90% - 20px);padding-left: 20px;padding-right: 20px;}
+.transaction_inner_form > input[type=submit]{padding:10px;border:1px solid #dadce0;border-radius:25px;padding-left:20px;padding-right:20px;font-size:18px;width:calc(100% - 48px);cursor: pointer;background: #262366;font-weight: 400;color: white;}
+.transaction_inner_form > p{width:90%;font-weight:600;color:#262366;}
+
+.add_account_button{position:absolute;right:15px;height:30px;width:30px;cursor:pointer;padding:10px;border-radius:50%;transition:background 0.2s ease;}
+.add_account_button:hover{background:rgba(50,50,50,0.05)}
+.add_account_button:active{background:rgba(50,50,50,0.1)}
+.add_account{height:30px;width:30px;-webkit-user-drag:none;user-select:none;}
+
+body.login_page{display:flex;min-height:100vh;background:#1d1c58;background-image: linear-gradient(180deg, #262366 5%, rgba(255,255,255,0) 100%);overflow-y:auto;overflow-x:hidden;}
+form.login_form{display:flex;flex-direction:column;overflow-y:auto;min-width:520px;justify-content:center;gap:50px;box-shadow:0px 0px 20px rgba(50,50,50,0.5);background:white;height:100vh;color:black;width:50vw;align-items:center;}
+.input_form{padding:10px;padding-left:20px;padding-right:20px;width:420px;border-radius:50px;font-size:16px;border:none;border:1px solid #dadce0}
+form.login_form > h1{width:442px}
+form.login_form::-webkit-scrollbar-thumb{height: 56px;border-radius: 8px;border: 4px solid transparent;background-clip: content-box;background-color: rgba(0,0,0,0.4);}
+.input_wrapper{display:flex;flex-direction:column;}
+.input_wrapper > label{margin:5px;}
+select.input_form{width:463px}
+.input_form[type=submit], .become_client[type=button]{cursor:pointer;width:462px;font-weight:400;margin-bottom:60px;background:#2b2872;color:white;}
+.login_logo{height:35px;width:35px;transform:translate(0px,3px);}
+.error{margin:-25px;font-size:18px;color:crimson;}
+.bubble_wrapper{height:100vh;width:50vw;display:flex;justify-content:center;align-items:center}
+.bubble{height:600px;width:400px;padding:50px;max-width:75%;max-height:75%;background:white;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:15px;}
+.bubble > p{text-align:justify;line-height:30px;}
+.become_client[type=button]{width:95%;margin-left:2.5%;margin-bottom:0px;}
+.clients_img{width:100%;}
+.loading_popup{position:absolute;top:0;height:100vh;min-width:520px;width:50vw;background:rgba(0,0,0,0.1);transition:opacity 0.2s ease;display:flex;align-items:center;justify-content:center;}
+.loading_popup.hidden{pointer-events:none;opacity:0%;}
+.load_spinner{width:200px;height:200px;aspect-ratio:1;border-radius:50%;background:transparent;border:10px solid transparent;border-top:10px solid #fff;animation:load 1s ease infinite}
+body.signup > form > .input_wrapper > .input_form[type=submit]{margin-bottom:0px}
+body.signup > form{justify-content:flex-start;padding-top:30px;padding-bottom:30px;height:calc(100vh - 60px)}
+body.signup{overflow:hidden;}
+
+.money_input_wrapper{
+    font-size: 18px;
+    padding: 10px;
+    width: 90%;
+    border-radius: 25px;
+    border: 1px solid #dadce0;
+    cursor: text;
+}
+.money_input{font-size: 18px;border: none;padding-left: 20px;width: calc(100% - 60px);}
+.money_input:focus-visible{outline:none;}
+.money_input_wrapper:has(.money_input:focus-visible){outline:1px solid black;}
+
+body.signup > .bubble_wrapper > .bubble{height:auto;}
+
+@keyframes load {0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+@media screen and (max-width:1350px){
+    .content_left{width:400px;min-width:400px;}
+    .content_right{width:calc(100% - 400px)}
+    .transactions_wrapper{display:flex;align-items:center;flex-direction:column;max-height:100vh;overflow-y:auto;overflow-x:hidden;gap:20px;justify-content:unset;}
+    .transaction_card{margin:0;padding:30px;gap:5px;min-height:180px;width:300px;border-radius:25px;max-width:80%}
+    .transaction_card > img{width:110px;height:110px;}
+    .transaction_card:nth-child(2){margin-top:120px}
+    .transaction_card:last-child{margin-bottom:20px}
+}
+
+
+@media screen and (max-width:1150px){
+	section.body{width:100%}
+	body:has(.navbar:not(.retracted)) > section.body > .content{overflow-x:hidden;}
+	body:has(.navbar:not(.retracted)) > section.body > .content > .content_right{transition:transform 0.2s ease, box-shadow 0.2s ease;border-top-left-radius:20px;max-width:50vw;width:400px;z-index:3;box-shadow:-3px 0px 20px #00000050;height:100vh;position:fixed;top:0;right:0;transform:translateX(0%);transition:transform 0.2s ease,opacity 0.2s ease, box-shadow 0.2s ease}
+	body:has(.navbar:not(.retracted)) > section.body > .content > .content_right > .content_title > .account_retract_button{display:block}
+	body:has(.navbar:not(.retracted)) > section.body > .content > .content_right.retracted{opacity:0;box-shadow:none;transform:translateX(100%)}
+    body:has(.navbar:not(.retracted)) > section.body > .content > .content_left{width:100%;min-width:auto;}
+    body:has(.navbar:not(.retracted)) > section.body > .content > .content_left > .card.account_view.account_selected{outline-color:transparent;}
+    body:has(.navbar:not(.retracted)) > section.body > .content > .content_right > .account_details > .account_view_balance_top{border-radius:0px;border-bottom-left-radius:25px;border-bottom-right-radius:25px;}
+    body:has(.navbar:not(.retracted)) > section.body > .content:has(.content_right:not(.retracted)) > .content_left > .card.account_view.account_selected{outline-color:#262366;}
+}
+
+
+@media screen and (max-width:830px){
+    .content{overflow-x:hidden;}
+    body > section.body > .content > #content_right{border-top-left-radius:20px;max-width:80vw;width:400px;z-index:3;box-shadow:-3px 0px 20px #00000050;z-index:9999;height:100vh;position:fixed;top:0;right:0;transform:translateX(0%);}
+    body > section.body > .content > #content_right.retracted{box-shadow:none;transform:translateX(100%)}
+    .content > .content_right > .content_title > .account_retract_button{display:block}
+    .content_left{width:100%;min-width:auto;}
+    .content > .content_right > .account_details > .account_view_balance_top{border-radius:0px;border-bottom-left-radius:25px;border-bottom-right-radius:25px;}
+    .card.account_view.account_selected{outline-color:transparent;}
+    .content:has(.content_right:not(.retracted)) > .content_left > .card.account_view.account_selected{outline-color:#262366;}
+}
+
+
+
+@media screen and (max-width:620px){
+	section.body{width:calc(100% - 74px)}
+	nav.navbar.left{width:74px;}
+	nav.navbar.left > .navTabsWrapper > .navTabWrapper > li.tab{color:transparent;border-radius:38px;user-select:none;}
+	nav.navbar.left > .account{padding-top:40px;}
+	nav.navbar.left > .account > .username{font-size:16px;margin-left:5px;width:calc(100% - 10px)}
+	nav.navbar.left > .header > .notification_wrapper{margin-left:-3px}
+	nav.navbar.left > .navTabsWrapper > .navTabWrapper > li.tab:hover:not(li.tab:active:not(li.tab.selected)) > .hover_tooltip{transform:scale(1) translateX(0px);opacity:100%}
+	nav.navbar.left.retracted:hover > .header > .retract_button{opacity:0%;}
+	.retract_button{opacity:0%;pointer-events:none;}
+	nav.navbar.left.retracted > .header > .retract_button{opacity:0%;}
+	nav.navbar.left.retracted:hover > .header > .retract_button{opacity:0%;}
+}

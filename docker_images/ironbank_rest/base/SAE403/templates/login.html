@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Iron Bank | Login </title>
+    <link href="/static/style.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.png" >
+    <script src="/static/login.js"></script>
+</head>
+<body class="login_page">
+ <form class="login_form" action="/login" onsubmit="login()" method="POST">
+     <div class="loading_popup hidden" id="loading_popup">
+         <div class="load_spinner"></div>
+     </div>
+  {% csrf_token %}
+  <h1> <img class="login_logo" src="/static/assets/password.png"> S'identifier </h1>
+  <p class="error"> {{error_message}} </p>
+  <div class="input_wrapper">
+      <label for="username"> Utilisateur* </label>
+   <input class='input_form' id="username" required name="username" value="{{username}}">
+  </div>
+  <div class="input_wrapper">
+      <label for="password"> Mot de passe* </label>
+   <input class='input_form' type="password" required id="password" name="password" placeholder="">
+  </div>
+  <div class="input_wrapper">
+   <input class='input_form' type="submit" value="S'identifier">
+  </div>
+ </form>
+ <div class="bubble_wrapper">
+     <div class="bubble">
+         <h1> Rejoignez notre banque dès aujourd'hui ! </h1>
+         <img class="clients_img" src="/static/assets/clients.jpg">
+         <p>Donnez un nouvel élan à vos finances en vous inscrivant dès maintenant. Profitez de services bancaires sécurisés, de conseils financiers personnalisés et de solutions adaptées à vos besoins. Joignez-vous à nous et prenez le contrôle de votre avenir financier dès aujourd'hui.</p>
+         <br>
+         <br>
+         <input onclick="window.location.href = '/signup'" class="input_form become_client" type="button" value="Devenir client">
+     </div>
+ </div>
+</body>
+</html>

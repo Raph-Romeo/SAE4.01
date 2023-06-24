@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Iron bank | Staff </title>
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.png" >
+    <style>
+      *{margin:0;padding:0;font-family:system-ui,verdana,arial;}
+      body{background:linear-gradient(0deg , rgba(255,255,255,1) 0%, #f1f2f6 10%);min-height:100vh}
+      nav{z-index:10;position:sticky;top:0;box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.1) 0px 3px 7px -3px;width:100%;height:48px;display:flex;align-items:center;color:white;justify-content:center;background-color:#1d1c58;background-image:linear-gradient(180deg, #262366 80%, rgba(255,255,255,0) 100%)}
+      nav > ul{list-style:none;display:flex;gap:20px;}
+      h3{color:#1d1c58;text-align:center;font-weight:600;margin:20px;}
+      .operations{padding-top:20px;width:100%;display:flex;align-items:center;gap:20px;flex-direction:column;list-style:none;padding-bottom:20px;}
+      .card{position:relative;background:white;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;width:calc(100% - 40px);gap:15px;align-items:center;display:flex;padding:20px;max-width:800px;min-height:40px;border-radius:25px;}
+      .actions{gap:15px;display:flex;position:absolute;right:25px;}
+      input[type=button]{width:100px;border:none;cursor:pointer;background:#262366;font-size:16px;font-weight:600;padding:5px;color:white;border-radius:12px;}
+      .navbar_link{cursor:pointer;}
+      .transaction_date{font-weight:500;color:#262366;text-align:left;width:100%;max-width:800px;}
+    </style>
+</head>
+<body>
+ {% csrf_token %}
+ <nav>
+   <ul>
+     <li class="navbar_link" onclick="window.location.href = '/logout'"> Se déconnecter </li>
+   </ul>
+ </nav>
+</body>
+<script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        function transaction_refuse(elem, id, type){
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/staff/transaction/" + id + "/" + type, true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = (e) => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    response = JSON.parse(xhr.responseText)
+                    if ("error" in response){
+                        alert(response.error);
+                    }else{
+                        elem.parentElement.parentElement.remove();
+                    }
+                } else {
+                  alert("Erreur de communication avec le serveur : " + xhr.statusText);
+                }
+              }
+            };
+            xhr.onerror = (e) => {
+              alert("Erreur de communication avec le serveur : " + xhr.statusText);
+            };
+            xhr.send(JSON.stringify({"authorize":false},null,1));
+        }
+
+        function transaction_accept(elem, id, type){
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/staff/transaction/" + id + "/" + type, true);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = (e) => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    response = JSON.parse(xhr.responseText)
+                    if ("error" in response){
+                        alert(response.error);
+                    }else{
+                        elem.parentElement.parentElement.remove();
+                    }
+                } else {
+                  alert("Erreur de communication avec le serveur : " + xhr.statusText);
+                }
+              }
+            };
+            xhr.onerror = (e) => {
+              alert("Erreur de communication avec le serveur : " + xhr.statusText);
+            };
+            xhr.send(JSON.stringify({"authorize":true},null,1));
+        }
+
+        function transactionHtmlFormat(transaction){
+            if (transaction.type == 1){
+                type = "Dépôt"
+            }else if (transaction.type == 2){
+                type = "Prélèvement"
+            }else{
+                type = "Virement"
+            }
+            console.log(transaction)
+            return "<li class='card'><b>" + type + " </b> " + transaction.name[1] + " : " + transaction.amount + "<div class='actions'> <input type='button' onclick='transaction_accept(this," + transaction.id + "," + transaction.type + ")' title='autoriser' value='autoriser'><input type='button' onclick='transaction_refuse(this," + transaction.id + "," + transaction.type + ")' title='interdire' value='Interdire'> </div></li>";
+        }
+
+        function getTransactions(){
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/client/transaction", true);
+            xhr.onload = (e) => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    response = JSON.parse(xhr.responseText)
+                    data = "";
+                    if (response.transactions.length == 0){
+                        data += "<h3> Acune opération n'est en attente de validation </h3>";
+                    }else{
+                        data = "<h3> Liste des opérations soumises à autorisation</h3><ul class='operations'>";
+                        if (response.transactions.length > 0){
+                            dates = [];
+                            for (var i=0;i<response.transactions.length;++i){
+                                date = response.transactions[i].transaction_date.split("T")[0];
+                                if (!dates.includes(date)){
+                                    dates.push(date);
+                                    console.log(date,dates);
+                                    data += "<div class='transaction_date'>" + date + " : </div>";
+                                }
+                                data += transactionHtmlFormat(response.transactions[i]);
+                            }
+                        }
+                    }
+                    document.body.innerHTML += data + '</ul>';
+                } else {
+                  alert("Erreur de communication avec le serveur : " + xhr.statusText);
+                }
+              }
+            };
+            xhr.onerror = (e) => {
+              alert("Erreur de communication avec le serveur : " + xhr.statusText);
+            };
+            xhr.send(null);
+        }
+
+        getTransactions();
+    </script>
+</html>

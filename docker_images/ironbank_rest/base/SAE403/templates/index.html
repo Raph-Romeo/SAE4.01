@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+ <html>
+  <head>
+   <meta charset="UTF-8">
+   <title> Iron Bank | Account </title>
+   <link rel="stylesheet" href="/static/style.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+   <script defer src="/static/api.js"></script>
+   <script defer src="/static/script.js"></script>
+   <link rel="shortcut icon" type="image/png" href="/static/favicon.png" >
+  </head>
+  <body>
+   {% csrf_token %}
+   <nav id="sidebar" class="navbar left">
+    <div class='header'>
+     <div class="notification_wrapper">
+      <img onclick="toggleNotifications();" src="/static/assets/notification.png" title="Notifications" class="tab_logo notification">
+      <div id="notifications_popup_wrapper" class="notifications_popup_wrapper hidden">
+       <span class="notifications_arrow"></span>
+       <div class="notifications_popup">
+	    <div class="notifications_header">Notifications <span class="notifications_close" onclick="toggleNotifications();">✕</span></div>
+		<div class="notifications_body">
+		 <ul>
+		  <li> Aucune notification </li>
+		 </ul>
+		</div>
+	   </div>
+      </div>
+     </div>
+	 <div onclick="retractSidebar();" class="retract_button">
+	  <img class="retract_icon" src="/static/assets/fleche.png">
+	 </div>
+    </div>
+    <div title="{{user}}" class="account">
+	 <img class="profilePicture" src="{% if user.profile_image %} {{user.profile_image.url}} {% endif %}" onerror="this.src='/static/profile.png'">
+	 <h1 class="username"> {{user.first_name}} {{user.last_name}} </h1>
+    </div>
+    <div class="navTabsWrapper">
+     <ul class="navTabWrapper">
+      <li class="tab" onclick="retractAccountDetails(true);selectTab(0);"> <img class="tab_logo" src="/static/assets/card.png"> Comptes <div class='hover_tooltip'> Comptes </div></li>
+      <li class="tab" onclick="selectTab(1)"> <img class="tab_logo" src="/static/assets/transaction.png"> Opérations <div class='hover_tooltip'> Opérations </div></li>
+      <li class="tab" onclick="selectTab(2)"> <img class="tab_logo" src="/static/assets/historique.png"> Historique <div class='hover_tooltip'> Historique </div></li>
+      <li class="separator"> <hr> </li>
+      <li class="tab reglages" onclick="selectTab(3)"> <img class="tab_logo" src="/static/assets/reglages.png"> Réglages <div class='hover_tooltip'> Réglages </div></li>
+	  <li class="tab" onclick="window.location.href = '/logout'"> <img class="tab_logo" src="/static/assets/deconnection.png"> Se déconnecter <div class='hover_tooltip'> Se déconnecter </div></li>
+     </ul>
+    </div>
+   </nav>
+   <section class="body">
+    <div class="main_popup hidden" id="main_popup">
+        <div class="popup_body" id="popup_body"></div>
+    </div>
+    <div class="load_animation" id="load_animation"></div>
+    <div class="content" id="content"></div>
+   </section>
+  </body>
+ </html>
